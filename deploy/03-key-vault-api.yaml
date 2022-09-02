@@ -16,6 +16,7 @@ spec:
         app: sb-api
     spec:
       serviceAccountName: key-vault-demo-sa
+      automountServiceAccountToken: true
       containers:
       - name: sb-api
         image: ghcr.io/jorturfer/netcoreconf-2022-bnc:main
