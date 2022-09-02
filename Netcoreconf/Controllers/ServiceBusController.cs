@@ -25,7 +25,7 @@ namespace Netcoreconf.Controllers
             return Content(properties.Value.TotalMessageCount.ToString());
         }
 
-        [HttpGet("add/{message}")]
+        [HttpPost("add/{message}")]
         public async Task<IActionResult> AddMessage(string message)
         {
             var sender = _client.CreateSender(_options.Queue);
@@ -36,7 +36,7 @@ namespace Netcoreconf.Controllers
             return Ok();
         }
 
-        [HttpGet("create")]
+        [HttpPost("create")]
         public async Task<IActionResult> Create()
         {
             var exists = await _adminClient.QueueExistsAsync(_options.Queue);
