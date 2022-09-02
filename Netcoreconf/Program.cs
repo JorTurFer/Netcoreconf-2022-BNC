@@ -2,6 +2,10 @@ using Netcoreconf.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Mount file provided by CSI Driver
+builder.Configuration.AddKeyPerFile("/mnt/secrets-store", optional: true);
+
+
 // Add services to the container.
 
 builder.Services.AddControllers();
