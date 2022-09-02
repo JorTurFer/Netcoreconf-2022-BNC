@@ -13,7 +13,7 @@ spec:
     objects:  |
       array:
         - |
-          objectName: ServiceBusConnection
+          objectName: ServiceBus--Connection
           objectType: secret
           objectAlias: ServiceBus__Connection
     tenantID: ""

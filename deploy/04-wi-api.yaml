@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: sb-api
-  namespace: manage-identities-demo
+  namespace: workload-identity-demo
   labels:
     app: sb-api
 spec:
@@ -15,7 +15,7 @@ spec:
       labels:
         app: sb-api
     spec:
-      serviceAccountName: workload-identity-sa
+      serviceAccountName: workload-identity-demo-sa
       containers:
       - name: sb-api
         image: ghcr.io/jorturfer/netcoreconf-2022-bnc:main
@@ -32,7 +32,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: sb-api-service
-  namespace: manage-identities-demo
+  namespace: workload-identity-demo
 spec:
   selector:
     app: sb-api
