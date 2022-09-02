@@ -46,5 +46,22 @@ namespace Netcoreconf.Controllers
             }
             return Ok();
         }
+
+        [HttpDelete("purge")]
+        public async Task<IActionResult> Purge()
+        {
+            var receiver = _client.CreateReceiver(_options.Queue);
+            var receivedMessages = await receiver.ReceiveMessagesAsync(maxMessages: 10, TimeSpan.FromMilliseconds(500));
+            while(receivedMessages.Count > 0)
+            {
+                foreach (ServiceBusReceivedMessage receivedMessage in receivedMessages)
+                {
+                    await receiver.CompleteMessageAsync(receivedMessage);
+                }
+                receivedMessages = await receiver.ReceiveMessagesAsync(maxMessages: 10, TimeSpan.FromMilliseconds(500));
+            }            
+
+            return Accepted();
+        }
     }
 }
