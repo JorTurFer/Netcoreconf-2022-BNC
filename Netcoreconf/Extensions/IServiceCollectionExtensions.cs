@@ -17,8 +17,8 @@ namespace Netcoreconf.Extensions
             {
                 services.AddAzureClients(builder =>
                 {
-                    builder.AddServiceBusClient(configuration.GetConnectionString(options.Connection));
-                    builder.AddServiceBusAdministrationClient(configuration.GetConnectionString(options.Connection));
+                    builder.AddServiceBusClient(options.Connection);
+                    builder.AddServiceBusAdministrationClient(options.Connection);
                 });
             } else if (!string.IsNullOrEmpty(options.Namespace))
             {
