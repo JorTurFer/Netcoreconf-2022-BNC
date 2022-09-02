@@ -15,6 +15,7 @@ spec:
         - |
           objectName: ServiceBusConnection
           objectType: secret
+          objectAlias: ServiceBus__Connection
     tenantID: ""
 ---
 apiVersion: apps/v1
