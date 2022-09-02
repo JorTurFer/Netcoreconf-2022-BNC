@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sb-api
+  namespace: manage-identities-demo
+  labels:
+    app: sb-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sb-api
+  template:
+    metadata:
+      labels:
+        app: sb-api
+    spec:
+      serviceAccountName: workload-identity-sa
+      containers:
+      - name: sb-api
+        image: ghcr.io/jorturfer/netcoreconf-2022-bnc:main
+        ports:
+        - containerPort: 80
+        env:
+        - name: SERVICEBUS__NAMESPACE
+          value: netcoreconf.servicebus.windows.net
+        - name: SERVICEBUS__QUEUE
+          value: aad-wi
+        imagePullPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sb-api-service
+  namespace: manage-identities-demo
+spec:
+  selector:
+    app: sb-api
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80

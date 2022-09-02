@@ -35,5 +35,16 @@ namespace Netcoreconf.Controllers
             await sender.SendMessagesAsync(messageBatch);
             return Ok();
         }
+
+        [HttpGet("create")]
+        public async Task<IActionResult> Create()
+        {
+            var exists = await _adminClient.QueueExistsAsync(_options.Queue);
+            if (!exists.Value)
+            {
+                await _adminClient.CreateQueueAsync(_options.Queue);
+            }
+            return Ok();
+        }
     }
 }
