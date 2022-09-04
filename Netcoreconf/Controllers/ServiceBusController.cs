@@ -3,13 +3,13 @@ using Azure.Messaging.ServiceBus.Administration;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
-namespace Netcoreconf.Controllers
+namespace Netcoreconf.ServiceBus
 {
     public class ServiceBusController : ControllerBase
     {
         private readonly ServiceBusClient _client;
         private readonly ServiceBusOptions _options;
-        public ServiceBusAdministrationClient _adminClient;
+        private readonly ServiceBusAdministrationClient _adminClient;
 
         public ServiceBusController(ServiceBusClient client, ServiceBusAdministrationClient adminClient, IOptions<ServiceBusOptions> options)
         {
@@ -29,7 +29,7 @@ namespace Netcoreconf.Controllers
         public async Task<IActionResult> AddMessage(string message)
         {
             var sender = _client.CreateSender(_options.Queue);
-            using ServiceBusMessageBatch messageBatch = await sender.CreateMessageBatchAsync();
+            using var messageBatch = await sender.CreateMessageBatchAsync();
             var sbMessage = new ServiceBusMessage(message);
             messageBatch.TryAddMessage(sbMessage);
             await sender.SendMessagesAsync(messageBatch);
@@ -54,7 +54,7 @@ namespace Netcoreconf.Controllers
             var receivedMessages = await receiver.ReceiveMessagesAsync(maxMessages: 10, TimeSpan.FromMilliseconds(500));
             while(receivedMessages.Count > 0)
             {
-                foreach (ServiceBusReceivedMessage receivedMessage in receivedMessages)
+                foreach (var receivedMessage in receivedMessages)
                 {
                     await receiver.CompleteMessageAsync(receivedMessage);
                 }

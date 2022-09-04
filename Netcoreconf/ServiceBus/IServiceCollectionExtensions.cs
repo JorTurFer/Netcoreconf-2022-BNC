@@ -3,7 +3,7 @@ using Azure.Messaging.ServiceBus;
 using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Netcoreconf.Extensions
+namespace Netcoreconf.ServiceBus
 {
     public static class IServiceCollectionExtensions
     {

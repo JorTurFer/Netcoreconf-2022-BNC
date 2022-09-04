@@ -1,6 +1,6 @@
 using Azure.Identity;
 using Netcoreconf;
-using Netcoreconf.Extensions;
+using Netcoreconf.ServiceBus;
 
 var builder = WebApplication.CreateBuilder(args);
 

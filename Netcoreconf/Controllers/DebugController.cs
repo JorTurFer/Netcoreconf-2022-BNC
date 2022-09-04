@@ -1,14 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-
 namespace Netcoreconf.Controllers
 {
     public class DebugController: ControllerBase
     {
         private readonly IConfiguration _configuration;
-        private const string serviceAccountTokenFile = "/var/run/secrets/kubernetes.io/serviceaccount/token";
-        private const string azureTokenFile = "/var/run/secrets/azure/tokens/azure-identity-token";
-
+        private const string ServiceAccountTokenFilePath = "/var/run/secrets/kubernetes.io/serviceaccount/token";
+        private const string AzureTokenFilePath = "/var/run/secrets/azure/tokens/azure-identity-token";
 
         public DebugController(IConfiguration configuration)
         {
@@ -16,10 +14,10 @@ namespace Netcoreconf.Controllers
         }
 
         [HttpGet("environment")]
-        public IActionResult GetEnvirnmentVariables()
+        public IActionResult GetEnvironmentVariables()
         {
-            var envirnmentVariables = Environment.GetEnvironmentVariables();
-            return Ok(envirnmentVariables);
+            var environmentVariables = Environment.GetEnvironmentVariables();
+            return Ok(environmentVariables);
         }
 
         [HttpGet("configuration")]
@@ -31,22 +29,20 @@ namespace Netcoreconf.Controllers
         [HttpGet("service-account-token")]
         public IActionResult GetServiceAccountToke()
         {
-            var token = "";
-            if (System.IO.File.Exists(serviceAccountTokenFile))
-            {
-                token = System.IO.File.ReadAllText(serviceAccountTokenFile);
-            }
+            var token = System.IO.File.Exists(ServiceAccountTokenFilePath)
+                ? System.IO.File.ReadAllText(ServiceAccountTokenFilePath)
+                : "";
+
             return Ok(token);
         }
 
-        [HttpGet("azure-tokent")]
+        [HttpGet("azure-token")]
         public IActionResult GetAzureToken()
         {
-            var token = "";
-            if (System.IO.File.Exists(azureTokenFile))
-            {
-                token = System.IO.File.ReadAllText(azureTokenFile);
-            }
+            var token = System.IO.File.Exists(AzureTokenFilePath)
+                ? System.IO.File.ReadAllText(AzureTokenFilePath)
+                : "";
+
             return Ok(token);
         }
     }
